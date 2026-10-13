@@ -77,24 +77,21 @@ Field names in the rendered form:
 | `q.<id>.country` | Phone: the ISO country of the number in `q.<id>`. |
 | `_hp` | Honeypot; must stay empty. |
 
-Choices submit their **value** (`option.value`, or the label when there is
-none), never the label: radio, checkbox, select and ranking inputs carry
-`value="<value>"` and show the label; grid cells carry the column's value and
-`readAnswers` keys grid answers by the row's value. `values` passed to
-`renderForm` are matched by value too.
 
 ### Choice classes and data attributes
 
 Every option wrapper (`.askdown-option`, `.askdown-ranking-option`), grid cell
-label (`.askdown-grid-cell`) and grid column header (`th[scope=col]`) carries
+label (`.askdown-grid-cell`) and grid column header (`th[scope=col]`) will have a
 `data-value="<value>"`; row headers (`th[scope=row]`) do too. Flags and
 sentiment come through as:
+
 
 | Hook | When |
 |---|---|
 | `askdown-sentiment-positive` / `-neutral` / `-negative` | A `positive`/`neutral`/`negative` flag, or (without one) a value of `yes`/`maybe`/`no`, case-insensitively. Options and grid *columns* only; rows never have a sentiment. |
 | `askdown-flag-<flag>` | Each other flag, e.g. `askdown-flag-muted`. Only flags made of `[a-z0-9-]` become classes. |
 | `data-flags="a b"` | The other flags, space-separated; absent when there are none. |
+
 
 `<option>` elements of a select get the same classes and `data-flags` (their
 `value` attribute already holds the value). `sentimentOf(choice)` is exported
