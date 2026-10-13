@@ -1,0 +1,650 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://askdown.dev/schema/v0.1.json",
+  "title": "Askdown form",
+  "description": "The JSON representation of an Askdown form. See https://askdown.dev/spec",
+  "type": "object",
+  "required": [
+    "askdown",
+    "pages"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "askdown": {
+      "const": "0.1",
+      "description": "Version of the Askdown spec."
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "description": "Markdown."
+    },
+    "settings": {
+      "$ref": "#/$defs/settings"
+    },
+    "pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/page"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+    },
+    "target": {
+      "description": "A page id, or \"submit\" to end the form.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$"
+    },
+    "settings": {
+      "type": "object",
+      "properties": {
+        "submitLabel": {
+          "type": "string"
+        },
+        "confirmation": {
+          "type": "string",
+          "description": "Markdown shown after submitting."
+        }
+      },
+      "additionalProperties": false
+    },
+    "page": {
+      "type": "object",
+      "required": [
+        "id",
+        "items"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/item"
+          }
+        },
+        "next": {
+          "$ref": "#/$defs/target"
+        }
+      },
+      "additionalProperties": false
+    },
+    "item": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "content",
+            "text",
+            "paragraph",
+            "email",
+            "url",
+            "phone",
+            "number",
+            "date",
+            "time",
+            "radio",
+            "checkbox",
+            "select",
+            "ranking",
+            "scale",
+            "rating",
+            "grid",
+            "checkbox-grid",
+            "file",
+            "address"
+          ]
+        }
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/content"
+        },
+        {
+          "$ref": "#/$defs/text"
+        },
+        {
+          "$ref": "#/$defs/paragraph"
+        },
+        {
+          "$ref": "#/$defs/email"
+        },
+        {
+          "$ref": "#/$defs/number"
+        },
+        {
+          "$ref": "#/$defs/dateOrTime"
+        },
+        {
+          "$ref": "#/$defs/choice"
+        },
+        {
+          "$ref": "#/$defs/select"
+        },
+        {
+          "$ref": "#/$defs/ranking"
+        },
+        {
+          "$ref": "#/$defs/scale"
+        },
+        {
+          "$ref": "#/$defs/rating"
+        },
+        {
+          "$ref": "#/$defs/grid"
+        },
+        {
+          "$ref": "#/$defs/file"
+        },
+        {
+          "$ref": "#/$defs/address"
+        },
+        {
+          "$ref": "#/$defs/phone"
+        }
+      ]
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "type",
+        "markdown"
+      ],
+      "properties": {
+        "type": {
+          "const": "content"
+        },
+        "markdown": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "question": {
+      "type": "object",
+      "required": [
+        "type",
+        "id",
+        "label"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "help": {
+          "type": "string",
+          "description": "Markdown."
+        },
+        "required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "length": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "text": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "const": "text"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "minLength": {
+          "$ref": "#/$defs/length"
+        },
+        "maxLength": {
+          "$ref": "#/$defs/length"
+        },
+        "pattern": {
+          "type": "string",
+          "format": "regex"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "paragraph": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "const": "paragraph"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "minLength": {
+          "$ref": "#/$defs/length"
+        },
+        "maxLength": {
+          "$ref": "#/$defs/length"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "email": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "email",
+            "url"
+          ]
+        },
+        "placeholder": {
+          "type": "string"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "number": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "const": "number"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "step": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "dateOrTime": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "date",
+            "time"
+          ]
+        },
+        "min": {
+          "type": "string"
+        },
+        "max": {
+          "type": "string"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "option": {
+      "type": "object",
+      "required": [
+        "label"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable value stored in responses. Defaults to the label."
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "description": "Presentation hints: positive/neutral/negative colour the choice; others are theme hooks."
+        },
+        "default": {
+          "type": "boolean"
+        },
+        "goto": {
+          "$ref": "#/$defs/target"
+        }
+      },
+      "additionalProperties": false
+    },
+    "options": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/option"
+      }
+    },
+    "choice": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "required": [
+        "options"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "radio",
+            "checkbox"
+          ]
+        },
+        "options": {
+          "$ref": "#/$defs/options"
+        },
+        "other": {
+          "type": "string",
+          "description": "Label of a free-text \"other\" option."
+        },
+        "shuffle": {
+          "type": "boolean"
+        },
+        "minSelected": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxSelected": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "select": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "required": [
+        "options"
+      ],
+      "properties": {
+        "type": {
+          "const": "select"
+        },
+        "options": {
+          "$ref": "#/$defs/options"
+        },
+        "shuffle": {
+          "type": "boolean"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "ranking": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "required": [
+        "options"
+      ],
+      "properties": {
+        "type": {
+          "const": "ranking"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "label"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "shuffle": {
+          "type": "boolean"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "scale": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "required": [
+        "min",
+        "max"
+      ],
+      "properties": {
+        "type": {
+          "const": "scale"
+        },
+        "min": {
+          "type": "integer"
+        },
+        "max": {
+          "type": "integer"
+        },
+        "minLabel": {
+          "type": "string"
+        },
+        "maxLabel": {
+          "type": "string"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "rating": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "required": [
+        "max"
+      ],
+      "properties": {
+        "type": {
+          "const": "rating"
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 10
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "grid": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "required": [
+        "rows",
+        "columns"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "grid",
+            "checkbox-grid"
+          ]
+        },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/cell"
+          }
+        },
+        "columns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/cell"
+          }
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "file": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "const": "file"
+        },
+        "accept": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "File extensions (\".pdf\") or media types (\"image/*\")."
+        },
+        "maxSize": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum size per file, in bytes."
+        },
+        "maxFiles": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "phone": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "const": "phone"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 code. The default country for national numbers; the respondent can change it."
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "address": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "const": "address"
+        },
+        "country": {
+          "type": "string",
+          "pattern": "^[A-Z]{2}$",
+          "description": "ISO 3166-1 alpha-2 code. When set, the country is fixed and not asked."
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "cell": {
+      "type": "object",
+      "required": [
+        "label"
+      ],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Stable value stored in responses. Defaults to the label."
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          },
+          "description": "Presentation hints: positive/neutral/negative colour the choice; others are theme hooks."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

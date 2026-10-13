@@ -1,0 +1,129 @@
+{
+  "$schema": "https://askdown.dev/schema/v0.1.json",
+  "askdown": "0.1",
+  "title": "DevConf RSVP",
+  "description": "Tell us whether you're coming, and what you'd like to see.",
+  "settings": {
+    "submitLabel": "Send RSVP",
+    "confirmation": "Thanks, see you there!"
+  },
+  "pages": [
+    {
+      "id": "page-1",
+      "next": "submit",
+      "items": [
+        {
+          "type": "content",
+          "markdown": "Intro text is **plain Markdown** and becomes a content block."
+        },
+        {
+          "id": "full-name",
+          "type": "text",
+          "label": "Full name",
+          "required": true
+        },
+        {
+          "id": "email",
+          "type": "email",
+          "label": "Email",
+          "help": "We'll only use this for event updates.",
+          "required": true
+        },
+        {
+          "id": "will-you-attend",
+          "type": "radio",
+          "label": "Will you attend?",
+          "required": true,
+          "options": [
+            {
+              "label": "Yes"
+            },
+            {
+              "label": "No",
+              "goto": "bye"
+            }
+          ]
+        },
+        {
+          "id": "which-days",
+          "type": "checkbox",
+          "label": "Which days?",
+          "options": [
+            {
+              "label": "Day 1"
+            },
+            {
+              "label": "Day 2"
+            }
+          ],
+          "other": "Other"
+        },
+        {
+          "id": "t-shirt-size",
+          "type": "select",
+          "label": "T-shirt size",
+          "options": [
+            {
+              "label": "S"
+            },
+            {
+              "label": "M"
+            },
+            {
+              "label": "L"
+            }
+          ]
+        },
+        {
+          "id": "how-excited-are-you",
+          "type": "scale",
+          "label": "How excited are you?",
+          "min": 1,
+          "max": 5,
+          "minLabel": "Meh",
+          "maxLabel": "Very"
+        },
+        {
+          "id": "rate-the-sessions",
+          "type": "grid",
+          "label": "Rate the sessions",
+          "rows": [
+            {
+              "label": "Keynote"
+            },
+            {
+              "label": "Workshop"
+            }
+          ],
+          "columns": [
+            {
+              "label": "Poor"
+            },
+            {
+              "label": "OK"
+            },
+            {
+              "label": "Great"
+            }
+          ]
+        },
+        {
+          "id": "anything-else",
+          "type": "paragraph",
+          "label": "Anything else?"
+        }
+      ]
+    },
+    {
+      "id": "bye",
+      "title": "Sorry to miss you",
+      "items": [
+        {
+          "id": "why-not",
+          "type": "paragraph",
+          "label": "Why not?"
+        }
+      ]
+    }
+  ]
+}

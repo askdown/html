@@ -1,0 +1,30 @@
+---
+title: Support request
+---
+
+--- {#start}
+
+? What do you need help with? *
+- ( ) Billing -> #billing
+- ( ) A bug -> #bug
+- ( ) Nothing, never mind -> submit
+
+--- {#billing}
+
+# Billing
+
+? Invoice number
+___
+
+-> submit
+
+--- {#bug}
+
+# Bug report
+
+? What happened? *
+___
+___
+
+? Screenshot
+[file accept="image/*"]

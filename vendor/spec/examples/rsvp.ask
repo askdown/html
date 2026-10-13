@@ -1,0 +1,53 @@
+---
+title: DevConf RSVP
+description: Tell us whether you're coming, and what you'd like to see.
+submit: Send RSVP
+confirmation: Thanks, see you there!
+---
+
+Intro text is **plain Markdown** and becomes a content block.
+
+? Full name *
+___
+
+? Email * {#email}
+> We'll only use this for event updates.
+[email]
+
+? Will you attend? *
+- ( ) Yes
+- ( ) No -> #bye
+
+? Which days?
+- [ ] Day 1
+- [ ] Day 2
+- [ ] Other: ___
+
+? T-shirt size
+[select]
+- S
+- M
+- L
+
+? How excited are you?
+[scale 1..5 "Meh" "Very"]
+
+? Rate the sessions
+[grid]
+|          | Poor | OK | Great |
+| Keynote  |
+| Workshop |
+
+? Anything else?
+___
+___
+
+-> submit
+
+--- {#bye}
+
+# Sorry to miss you
+
+? Why not?
+___
+___

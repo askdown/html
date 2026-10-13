@@ -1,0 +1,213 @@
+{
+  "$schema": "https://askdown.dev/schema/v0.1.json",
+  "askdown": "0.1",
+  "title": "Every question type",
+  "pages": [
+    {
+      "id": "page-1",
+      "items": [
+        {
+          "id": "short",
+          "type": "text",
+          "label": "Short answer",
+          "placeholder": "Your answer",
+          "maxLength": 80,
+          "pattern": "[A-Za-z ]+"
+        },
+        {
+          "id": "long",
+          "type": "paragraph",
+          "label": "Long answer",
+          "minLength": 10
+        },
+        {
+          "id": "website",
+          "type": "url",
+          "label": "Website",
+          "placeholder": "https://example.com"
+        },
+        {
+          "id": "phone",
+          "type": "phone",
+          "label": "Phone",
+          "placeholder": "06 12345678",
+          "country": "NL"
+        },
+        {
+          "id": "age",
+          "type": "number",
+          "label": "Age",
+          "min": 0,
+          "max": 130,
+          "step": 1
+        },
+        {
+          "id": "birthday",
+          "type": "date",
+          "label": "Birthday",
+          "min": "1900-01-01"
+        },
+        {
+          "id": "preferred-time",
+          "type": "time",
+          "label": "Preferred time"
+        },
+        {
+          "id": "favorite-color",
+          "type": "radio",
+          "label": "Favorite color",
+          "options": [
+            {
+              "label": "Red"
+            },
+            {
+              "label": "Green",
+              "default": true
+            },
+            {
+              "label": "Blue"
+            }
+          ],
+          "other": "Something else",
+          "shuffle": true
+        },
+        {
+          "id": "toppings",
+          "type": "checkbox",
+          "label": "Toppings",
+          "options": [
+            {
+              "label": "Cheese",
+              "default": true
+            },
+            {
+              "label": "Mushrooms"
+            },
+            {
+              "label": "Olives"
+            }
+          ],
+          "minSelected": 1,
+          "maxSelected": 2
+        },
+        {
+          "id": "country",
+          "type": "select",
+          "label": "Country",
+          "options": [
+            {
+              "label": "Netherlands"
+            },
+            {
+              "label": "Canada"
+            },
+            {
+              "label": "Other country"
+            }
+          ]
+        },
+        {
+          "id": "rank-these-features",
+          "type": "ranking",
+          "label": "Rank these features",
+          "options": [
+            {
+              "label": "Dark mode"
+            },
+            {
+              "label": "Offline sync"
+            },
+            {
+              "label": "Export"
+            }
+          ]
+        },
+        {
+          "id": "overall",
+          "type": "rating",
+          "label": "Overall",
+          "max": 10
+        },
+        {
+          "id": "availability",
+          "type": "checkbox-grid",
+          "label": "Availability",
+          "rows": [
+            {
+              "label": "Monday"
+            },
+            {
+              "label": "Tuesday"
+            }
+          ],
+          "columns": [
+            {
+              "label": "Morning"
+            },
+            {
+              "label": "Afternoon"
+            }
+          ]
+        },
+        {
+          "id": "how-do-you-feel-about-each-proposal",
+          "type": "grid",
+          "label": "How do you feel about each proposal?",
+          "rows": [
+            {
+              "label": "Dark mode"
+            },
+            {
+              "label": "Public API"
+            }
+          ],
+          "columns": [
+            {
+              "label": "Love it",
+              "value": "yes"
+            },
+            {
+              "label": "Neutral",
+              "value": "maybe"
+            },
+            {
+              "label": "Against",
+              "value": "no"
+            },
+            {
+              "label": "N/A",
+              "value": "na",
+              "flags": [
+                "muted"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "home-address",
+          "type": "address",
+          "label": "Home address"
+        },
+        {
+          "id": "delivery-address",
+          "type": "address",
+          "label": "Delivery address",
+          "country": "NL"
+        },
+        {
+          "id": "resume",
+          "type": "file",
+          "label": "Resume",
+          "help": "PDF or Word, up to 5MB.",
+          "required": true,
+          "accept": [
+            ".pdf",
+            ".docx"
+          ],
+          "maxSize": 5242880,
+          "maxFiles": 2
+        }
+      ]
+    }
+  ]
+}

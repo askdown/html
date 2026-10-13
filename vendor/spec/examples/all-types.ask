@@ -1,0 +1,74 @@
+---
+title: Every question type
+---
+
+? Short answer {#short}
+[text placeholder="Your answer" maxlength=80 pattern="[A-Za-z ]+"]
+
+? Long answer {#long}
+[paragraph minlength=10]
+
+? Website
+[url placeholder=https://example.com]
+
+? Phone
+[phone country=nl placeholder="06 12345678"]
+
+? Age
+[number min=0 max=130 step=1]
+
+? Birthday
+[date min=1900-01-01]
+
+? Preferred time
+[time]
+
+? Favorite color
+[radio shuffle]
+- ( ) Red
+- (x) Green
+- ( ) Blue
+- ( ) Something else: ___
+
+? Toppings
+[checkbox min=1 max=2]
+- [x] Cheese
+- [ ] Mushrooms
+- [ ] Olives
+
+? Country
+[dropdown]
+- Netherlands
+- Canada
+- Other country
+
+? Rank these features
+1. Dark mode
+2. Offline sync
+3. Export
+
+? Overall
+[rating 10]
+
+? Availability
+[checkbox-grid]
+| | Morning | Afternoon |
+|---|---|---|
+| Monday | | |
+| Tuesday | | |
+
+? How do you feel about each proposal?
+[grid]
+| | Love it {yes} | Neutral {maybe} | Against {no} | N/A {na .muted} |
+| Dark mode |
+| Public API |
+
+? Home address
+[address]
+
+? Delivery address
+[address country=nl]
+
+? Resume *
+> PDF or Word, up to 5MB.
+[file accept=".pdf,.docx" maxsize=5MB maxfiles=2]

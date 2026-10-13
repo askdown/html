@@ -1,0 +1,1752 @@
+/*
+ * @askdown/html — default styles for rendered forms.
+ *
+ * Everything is scoped under .askdown and driven by custom properties, so a
+ * host page can re-theme a form by overriding the --askdown-* tokens on
+ * .askdown (or any ancestor). Dark mode follows prefers-color-scheme, and a
+ * [data-theme="light" | "dark"] attribute on the form or an ancestor forces
+ * a scheme.
+ */
+
+/* ---------------------------------------------------------------------------
+ * Tokens
+ * ------------------------------------------------------------------------- */
+
+.askdown {
+  /* Type */
+  --askdown-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --askdown-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --askdown-font-size: 1rem;
+  --askdown-line-height: 1.55;
+
+  /* Color */
+  --askdown-accent: #4f46e5;
+  --askdown-accent-hover: #4338ca;
+  --askdown-accent-contrast: #ffffff;
+  --askdown-accent-soft: rgba(79, 70, 229, 0.1);
+  --askdown-bg: #f6f6f9;
+  --askdown-surface: #ffffff;
+  --askdown-surface-2: #f3f4f8;
+  --askdown-text: #16181d;
+  --askdown-text-muted: #5e6472;
+  --askdown-border: #d9dce3;
+  --askdown-border-strong: #b6bac6;
+  --askdown-error: #c62828;
+  --askdown-error-soft: rgba(198, 40, 40, 0.08);
+  --askdown-success: #1f8a4c;
+  --askdown-star: #f5a524;
+  --askdown-focus: var(--askdown-accent);
+  /* Sentiment of yes/maybe/no choices (see "Sentiment & flags" below). */
+  --askdown-positive: #1f8a4c;
+  --askdown-neutral: #ca8a04;
+  --askdown-negative: #b42318;
+
+  /* Shape & spacing */
+  --askdown-radius: 14px;
+  --askdown-radius-sm: 8px;
+  --askdown-space: 1rem;
+  --askdown-max-width: 42rem;
+  --askdown-control-height: 2.75rem;
+  --askdown-shadow: 0 1px 2px rgba(20, 22, 30, 0.04), 0 8px 24px -12px rgba(20, 22, 30, 0.14);
+
+  color-scheme: light;
+}
+
+.askdown,
+[data-theme="dark"] .askdown,
+.askdown[data-theme="dark"] {
+  --askdown-dark-accent: #818cf8;
+  --askdown-dark-accent-hover: #a5b4fc;
+  --askdown-dark-accent-contrast: #101223;
+  --askdown-dark-accent-soft: rgba(129, 140, 248, 0.16);
+  --askdown-dark-bg: #0f1117;
+  --askdown-dark-surface: #181b24;
+  --askdown-dark-surface-2: #1f2330;
+  --askdown-dark-text: #eceef4;
+  --askdown-dark-text-muted: #9aa1b2;
+  --askdown-dark-border: #2c3140;
+  --askdown-dark-border-strong: #3d4356;
+  --askdown-dark-error: #f28b82;
+  --askdown-dark-error-soft: rgba(242, 139, 130, 0.12);
+  --askdown-dark-success: #5fd39a;
+  --askdown-dark-star: #fbbf24;
+  --askdown-dark-positive: #5fd39a;
+  --askdown-dark-neutral: #facc15;
+  --askdown-dark-negative: #f97066;
+  --askdown-dark-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="dark"] .askdown,
+.askdown[data-theme="dark"] {
+  --askdown-accent: var(--askdown-dark-accent);
+  --askdown-accent-hover: var(--askdown-dark-accent-hover);
+  --askdown-accent-contrast: var(--askdown-dark-accent-contrast);
+  --askdown-accent-soft: var(--askdown-dark-accent-soft);
+  --askdown-bg: var(--askdown-dark-bg);
+  --askdown-surface: var(--askdown-dark-surface);
+  --askdown-surface-2: var(--askdown-dark-surface-2);
+  --askdown-text: var(--askdown-dark-text);
+  --askdown-text-muted: var(--askdown-dark-text-muted);
+  --askdown-border: var(--askdown-dark-border);
+  --askdown-border-strong: var(--askdown-dark-border-strong);
+  --askdown-error: var(--askdown-dark-error);
+  --askdown-error-soft: var(--askdown-dark-error-soft);
+  --askdown-success: var(--askdown-dark-success);
+  --askdown-star: var(--askdown-dark-star);
+  --askdown-positive: var(--askdown-dark-positive);
+  --askdown-neutral: var(--askdown-dark-neutral);
+  --askdown-negative: var(--askdown-dark-negative);
+  --askdown-shadow: var(--askdown-dark-shadow);
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  .askdown:not([data-theme="light"]) {
+    --askdown-accent: var(--askdown-dark-accent);
+    --askdown-accent-hover: var(--askdown-dark-accent-hover);
+    --askdown-accent-contrast: var(--askdown-dark-accent-contrast);
+    --askdown-accent-soft: var(--askdown-dark-accent-soft);
+    --askdown-bg: var(--askdown-dark-bg);
+    --askdown-surface: var(--askdown-dark-surface);
+    --askdown-surface-2: var(--askdown-dark-surface-2);
+    --askdown-text: var(--askdown-dark-text);
+    --askdown-text-muted: var(--askdown-dark-text-muted);
+    --askdown-border: var(--askdown-dark-border);
+    --askdown-border-strong: var(--askdown-dark-border-strong);
+    --askdown-error: var(--askdown-dark-error);
+    --askdown-error-soft: var(--askdown-dark-error-soft);
+    --askdown-success: var(--askdown-dark-success);
+    --askdown-star: var(--askdown-dark-star);
+    --askdown-positive: var(--askdown-dark-positive);
+    --askdown-neutral: var(--askdown-dark-neutral);
+    --askdown-negative: var(--askdown-dark-negative);
+    --askdown-shadow: var(--askdown-dark-shadow);
+    color-scheme: dark;
+  }
+
+  [data-theme="light"] .askdown,
+  .askdown[data-theme="light"] {
+    --askdown-accent: #4f46e5;
+    --askdown-accent-hover: #4338ca;
+    --askdown-accent-contrast: #ffffff;
+    --askdown-accent-soft: rgba(79, 70, 229, 0.1);
+    --askdown-bg: #f6f6f9;
+    --askdown-surface: #ffffff;
+    --askdown-surface-2: #f3f4f8;
+    --askdown-text: #16181d;
+    --askdown-text-muted: #5e6472;
+    --askdown-border: #d9dce3;
+    --askdown-border-strong: #b6bac6;
+    --askdown-error: #c62828;
+    --askdown-error-soft: rgba(198, 40, 40, 0.08);
+    --askdown-success: #1f8a4c;
+    --askdown-star: #f5a524;
+    --askdown-positive: #1f8a4c;
+    --askdown-neutral: #ca8a04;
+    --askdown-negative: #b42318;
+    --askdown-shadow: 0 1px 2px rgba(20, 22, 30, 0.04), 0 8px 24px -12px rgba(20, 22, 30, 0.14);
+    color-scheme: light;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Base
+ * ------------------------------------------------------------------------- */
+
+.askdown {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--askdown-max-width);
+  margin: 0 auto;
+  padding: calc(var(--askdown-space) * 1.5) var(--askdown-space);
+  font-family: var(--askdown-font);
+  font-size: var(--askdown-font-size);
+  line-height: var(--askdown-line-height);
+  color: var(--askdown-text);
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+.askdown *,
+.askdown *::before,
+.askdown *::after {
+  box-sizing: inherit;
+}
+
+.askdown-sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.askdown [hidden] {
+  display: none !important;
+}
+
+.askdown :focus-visible {
+  outline: 2px solid var(--askdown-focus);
+  outline-offset: 2px;
+  border-radius: var(--askdown-radius-sm);
+}
+
+.askdown a {
+  color: var(--askdown-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+.askdown a:hover {
+  color: var(--askdown-accent-hover);
+}
+
+.askdown code {
+  font-family: var(--askdown-font-mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--askdown-surface-2);
+}
+
+.askdown pre {
+  overflow: auto;
+  padding: 0.85rem 1rem;
+  border-radius: var(--askdown-radius-sm);
+  background: var(--askdown-surface-2);
+}
+
+.askdown pre code {
+  padding: 0;
+  background: none;
+}
+
+.askdown blockquote {
+  margin: 0.75rem 0;
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-left: 3px solid var(--askdown-border-strong);
+  color: var(--askdown-text-muted);
+}
+
+.askdown img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--askdown-radius-sm);
+}
+
+.askdown hr {
+  border: 0;
+  border-top: 1px solid var(--askdown-border);
+  margin: 1.25rem 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Cards: header, pages, confirmation
+ * ------------------------------------------------------------------------- */
+
+.askdown-header,
+.askdown-page,
+.askdown-confirmation {
+  position: relative;
+  background: var(--askdown-surface);
+  border: 1px solid var(--askdown-border);
+  border-radius: var(--askdown-radius);
+  box-shadow: var(--askdown-shadow);
+  padding: clamp(1.25rem, 4vw, 2rem);
+}
+
+.askdown-header {
+  margin-bottom: var(--askdown-space);
+  overflow: hidden;
+}
+
+.askdown-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 8px;
+  background: linear-gradient(90deg, var(--askdown-accent), color-mix(in srgb, var(--askdown-accent) 55%, transparent));
+}
+
+.askdown-title {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.5rem, 2.2vw + 1rem, 2rem);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.askdown-description {
+  margin-top: 0.75rem;
+  color: var(--askdown-text-muted);
+}
+
+.askdown-description > :first-child,
+.askdown-content > :first-child,
+.askdown-help > :first-child,
+.askdown-confirmation-body > :first-child {
+  margin-top: 0;
+}
+
+.askdown-description > :last-child,
+.askdown-content > :last-child,
+.askdown-help > :last-child,
+.askdown-confirmation-body > :last-child {
+  margin-bottom: 0;
+}
+
+.askdown-page {
+  margin-bottom: var(--askdown-space);
+}
+
+.askdown-page:focus {
+  outline: none;
+}
+
+.askdown-page-title {
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--askdown-border);
+  font-size: 1.3rem;
+  line-height: 1.3;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.askdown-page-title:focus {
+  outline: none;
+}
+
+.askdown-content {
+  margin: 1.25rem 0;
+}
+
+.askdown-content h2,
+.askdown-content h3,
+.askdown-content h4 {
+  margin: 1.5rem 0 0.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.askdown-content h2 { font-size: 1.25rem; }
+.askdown-content h3 { font-size: 1.1rem; }
+.askdown-content h4 { font-size: 1rem; }
+
+/* ---------------------------------------------------------------------------
+ * Questions
+ * ------------------------------------------------------------------------- */
+
+.askdown-question {
+  margin: 0;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--askdown-border);
+}
+
+.askdown-question:first-child,
+.askdown-page-title + .askdown-question,
+.askdown-content + .askdown-question {
+  border-top: 0;
+  padding-top: 0.25rem;
+}
+
+.askdown-question:last-child {
+  padding-bottom: 0.25rem;
+}
+
+.askdown-fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.askdown-label {
+  display: block;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  font-weight: 600;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  color: var(--askdown-text);
+}
+
+legend.askdown-label {
+  float: left; /* lets the legend flow like a block inside the fieldset */
+  width: 100%;
+}
+
+legend.askdown-label + * {
+  clear: both;
+}
+
+.askdown-required {
+  margin-left: 0.25em;
+  color: var(--askdown-error);
+  font-weight: 700;
+}
+
+.askdown-help {
+  margin: -0.25rem 0 0.75rem;
+  font-size: 0.925rem;
+  color: var(--askdown-text-muted);
+}
+
+.askdown-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--askdown-text-muted);
+}
+
+.askdown-control {
+  clear: both;
+}
+
+.askdown-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--askdown-error);
+}
+
+.askdown-error::before {
+  content: "";
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+  margin-top: 0.2em;
+  border-radius: 50%;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='white'/%3E%3Cpath d='M12 6.5v7' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='17.2' r='1.4' fill='black'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='11' fill='white'/%3E%3Cpath d='M12 6.5v7' stroke='black' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='12' cy='17.2' r='1.4' fill='black'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.askdown-error-summary {
+  margin-bottom: var(--askdown-space);
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--askdown-error);
+  border-left-width: 4px;
+  border-radius: var(--askdown-radius-sm);
+  background: var(--askdown-error-soft);
+}
+
+.askdown-error-summary-title {
+  margin: 0 0 0.35rem;
+  font-weight: 600;
+  color: var(--askdown-error);
+}
+
+.askdown-error-summary ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.askdown-error-summary a {
+  color: inherit;
+  font-weight: 500;
+}
+
+/* ---------------------------------------------------------------------------
+ * Text-like inputs
+ * ------------------------------------------------------------------------- */
+
+.askdown-input {
+  display: block;
+  width: 100%;
+  min-height: var(--askdown-control-height);
+  padding: 0.55rem 0.85rem;
+  font: inherit;
+  line-height: 1.4;
+  color: var(--askdown-text);
+  background: var(--askdown-surface);
+  border: 1.5px solid var(--askdown-border-strong);
+  border-radius: var(--askdown-radius-sm);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.askdown-input::placeholder {
+  color: var(--askdown-text-muted);
+  opacity: 0.8;
+}
+
+.askdown-input:hover {
+  border-color: color-mix(in srgb, var(--askdown-border-strong) 50%, var(--askdown-accent));
+}
+
+.askdown-input:focus,
+.askdown-input:focus-visible {
+  outline: none;
+  border-color: var(--askdown-accent);
+  box-shadow: 0 0 0 3px var(--askdown-accent-soft);
+}
+
+.askdown-input[aria-invalid="true"] {
+  border-color: var(--askdown-error);
+}
+
+.askdown-input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px var(--askdown-error-soft);
+}
+
+.askdown-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.askdown-textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.askdown-input--number,
+.askdown-input--date,
+.askdown-input--time {
+  max-width: 16rem;
+}
+
+.askdown-select {
+  max-width: 24rem;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.1rem;
+  cursor: pointer;
+}
+
+.askdown-other-input {
+  flex: 1 1 8rem;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.65rem;
+  margin-left: 0.25rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * Radio & checkbox options
+ * ------------------------------------------------------------------------- */
+
+.askdown-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.askdown-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.75rem;
+  border: 1.5px solid transparent;
+  border-radius: var(--askdown-radius-sm);
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+/*
+ * The colour of a choice is the form accent unless the option or grid column
+ * sets the --askdown-choice-* variables (see "Sentiment & flags").
+ */
+.askdown-option:hover {
+  background: var(--askdown-choice-hover, var(--askdown-surface-2));
+}
+
+.askdown-option:has(.askdown-choice:checked) {
+  background: var(--askdown-choice-soft, var(--askdown-accent-soft));
+  border-color: color-mix(in srgb, var(--askdown-choice-accent, var(--askdown-accent)) 35%, transparent);
+}
+
+.askdown-option-label {
+  flex: 1 1 auto;
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+/* The label should be the click target for the whole row. */
+.askdown-option-label::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.askdown-option--other .askdown-option-label {
+  flex: 0 1 auto;
+}
+
+.askdown-option--other .askdown-option-label::before {
+  /* Leave the text input clickable. */
+  right: auto;
+  width: 2.75rem;
+}
+
+.askdown-option--other .askdown-other-input {
+  position: relative;
+  z-index: 1;
+}
+
+.askdown-choice {
+  flex: none;
+  width: 1.35rem;
+  height: 1.35rem;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--askdown-surface);
+  border: 2px solid var(--askdown-choice-ring, var(--askdown-border-strong));
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
+}
+
+.askdown-choice[type="radio"] {
+  border-radius: 50%;
+}
+
+.askdown-choice[type="checkbox"] {
+  border-radius: 6px;
+}
+
+.askdown-choice::before {
+  content: "";
+  width: 0.6rem;
+  height: 0.6rem;
+  transform: scale(0);
+  transition: transform 120ms ease-out;
+}
+
+.askdown-choice[type="radio"]::before {
+  border-radius: 50%;
+  background: var(--askdown-accent-contrast);
+}
+
+.askdown-choice[type="checkbox"]::before {
+  width: 0.8rem;
+  height: 0.8rem;
+  background: var(--askdown-accent-contrast);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12.5l5 5L20 6.5' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 12.5l5 5L20 6.5' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.askdown-choice:hover {
+  border-color: var(--askdown-choice-accent, var(--askdown-accent));
+}
+
+.askdown-choice:checked {
+  background: var(--askdown-choice-accent, var(--askdown-accent));
+  border-color: var(--askdown-choice-accent, var(--askdown-accent));
+}
+
+.askdown-choice:checked::before {
+  transform: scale(1);
+}
+
+.askdown-choice:focus-visible {
+  outline: 2px solid var(--askdown-focus);
+  outline-offset: 2px;
+}
+
+.askdown-choice[aria-invalid="true"] {
+  border-color: var(--askdown-error);
+}
+
+/* ---------------------------------------------------------------------------
+ * Scale
+ * ------------------------------------------------------------------------- */
+
+.askdown-scale {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.85rem;
+}
+
+.askdown-scale-label {
+  font-size: 0.9rem;
+  color: var(--askdown-text-muted);
+  max-width: 10rem;
+}
+
+.askdown-scale-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.askdown-scale-option {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+
+.askdown-scale-option input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.askdown-scale-value {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--askdown-border-strong);
+  border-radius: 999px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  background: var(--askdown-surface);
+  color: var(--askdown-text);
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform 120ms ease;
+}
+
+.askdown-scale-option:hover .askdown-scale-value {
+  border-color: var(--askdown-accent);
+  background: var(--askdown-accent-soft);
+}
+
+.askdown-scale-option input:checked + .askdown-scale-value {
+  background: var(--askdown-accent);
+  border-color: var(--askdown-accent);
+  color: var(--askdown-accent-contrast);
+}
+
+.askdown-scale-option input:focus-visible + .askdown-scale-value {
+  outline: 2px solid var(--askdown-focus);
+  outline-offset: 2px;
+}
+
+.askdown-scale-option input[aria-invalid="true"] + .askdown-scale-value {
+  border-color: var(--askdown-error);
+}
+
+@media (max-width: 480px) {
+  .askdown-scale {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .askdown-scale-options {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+
+  .askdown-scale-label {
+    grid-row: 2;
+    max-width: none;
+  }
+
+  .askdown-scale-label--min {
+    grid-column: 1;
+  }
+
+  .askdown-scale-label--max {
+    grid-column: 2;
+    text-align: right;
+  }
+
+  .askdown-scale-option {
+    flex: 1 1 2.25rem;
+    min-width: 2.25rem;
+  }
+
+  .askdown-scale-value {
+    min-width: 2.25rem;
+    padding: 0 0.25rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Rating
+ * ------------------------------------------------------------------------- */
+
+.askdown-rating {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  margin-left: -0.25rem;
+}
+
+.askdown-rating-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.askdown-rating-star {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  cursor: pointer;
+  color: var(--askdown-border-strong);
+  border-radius: 50%;
+  transition: color 100ms ease, transform 100ms ease;
+}
+
+.askdown-rating-star svg {
+  width: 1.85rem;
+  height: 1.85rem;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linejoin: round;
+  transition: transform 100ms ease;
+}
+
+.askdown-rating-star:hover svg {
+  transform: scale(1.12);
+}
+
+/* Filled stars: the checked one and every star before it. */
+.askdown-rating-input:checked + .askdown-rating-star,
+.askdown-rating-star:has(~ .askdown-rating-input:checked) {
+  color: var(--askdown-star);
+}
+
+/* Hover preview: the hovered one and every star before it. */
+.askdown-rating:hover .askdown-rating-star {
+  color: var(--askdown-border-strong);
+}
+
+.askdown-rating .askdown-rating-star:hover,
+.askdown-rating .askdown-rating-star:has(~ .askdown-rating-star:hover) {
+  color: var(--askdown-star);
+}
+
+.askdown-rating-input:focus-visible + .askdown-rating-star {
+  outline: 2px solid var(--askdown-focus);
+  outline-offset: -2px;
+}
+
+.askdown-rating-input[aria-invalid="true"] + .askdown-rating-star {
+  color: color-mix(in srgb, var(--askdown-error) 50%, var(--askdown-border-strong));
+}
+
+/* ---------------------------------------------------------------------------
+ * Grids
+ * ------------------------------------------------------------------------- */
+
+.askdown-grid-scroll {
+  overflow-x: auto;
+  margin: 0 calc(-1 * var(--askdown-space));
+  padding: 0 var(--askdown-space);
+  -webkit-overflow-scrolling: touch;
+}
+
+.askdown-grid {
+  width: 100%;
+  min-width: max-content;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.95rem;
+}
+
+.askdown-grid th,
+.askdown-grid td {
+  padding: 0.35rem 0.6rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.askdown-grid thead th {
+  padding-bottom: 0.6rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--askdown-text-muted);
+  min-width: 4.5rem;
+}
+
+.askdown-grid tbody th {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  text-align: left;
+  font-weight: 500;
+  padding-right: 1.25rem;
+  background: var(--askdown-surface);
+}
+
+/* Alternating row shading. A chosen cell paints a solid tint over this,
+ * so the selected colour reads the same on odd and even rows. */
+.askdown-grid tbody tr:nth-child(odd) th,
+.askdown-grid tbody tr:nth-child(odd) td {
+  background: var(--askdown-surface-2);
+}
+
+/*
+ * The label fills its cell so the whole cell is the hit target. Its own
+ * background is clipped inside a transparent border, so a hovered or chosen
+ * cell shows as a chip with a little air around it.
+ */
+.askdown-grid-cell {
+  display: grid;
+  place-items: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  margin: -0.35rem -0.6rem;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.askdown-grid-cell:hover {
+  background-color: var(--askdown-choice-hover, var(--askdown-accent-soft));
+}
+
+.askdown-grid-cell:has(.askdown-choice:checked) {
+  background-color: var(--askdown-choice-soft, var(--askdown-accent-soft));
+}
+
+/* ---------------------------------------------------------------------------
+ * Sentiment & flags
+ * ------------------------------------------------------------------------- */
+
+/*
+ * An option or grid column whose value is yes/maybe/no, or that carries a
+ * positive/neutral/negative flag, is rendered with a green/amber/red accent:
+ * the renderer adds askdown-sentiment-positive|neutral|negative to the option
+ * wrapper, the grid cell label and the column header. The colour is a hint on
+ * top of the control's checked state and the label text, never the only cue.
+ * At rest only the control's ring is tinted, so an unanswered form stays
+ * calm; the chosen option or cell takes the full colour.
+ *
+ * Other flags come through as askdown-flag-<flag>; "muted" is styled here,
+ * the rest are hooks for a host stylesheet.
+ */
+.askdown-sentiment-positive {
+  --askdown-sentiment: var(--askdown-positive);
+}
+
+.askdown-sentiment-neutral {
+  --askdown-sentiment: var(--askdown-neutral);
+}
+
+.askdown-sentiment-negative {
+  --askdown-sentiment: var(--askdown-negative);
+}
+
+/*
+ * Sentiment colour applies to grids only, and never to the controls. It
+ * tints the column header and fills a cell's background on hover / when
+ * chosen; the radio or checkbox itself keeps its normal neutral styling.
+ * Plain radio/checkbox lists get no sentiment colour at all.
+ */
+.askdown-grid thead th:is(.askdown-sentiment-positive, .askdown-sentiment-neutral, .askdown-sentiment-negative),
+.askdown-grid-cell:is(.askdown-sentiment-positive, .askdown-sentiment-neutral, .askdown-sentiment-negative) {
+  /* Solid tints (mixed into the surface, not transparent) so a hovered or
+   * chosen cell looks the same on every row, over the zebra striping. */
+  --askdown-choice-hover: color-mix(in srgb, var(--askdown-sentiment) 13%, var(--askdown-surface));
+  --askdown-choice-soft: color-mix(in srgb, var(--askdown-sentiment) 22%, var(--askdown-surface));
+  /* The sentiment pulled toward the text colour, for text on a tint. */
+  --askdown-sentiment-ink: color-mix(in srgb, var(--askdown-sentiment) 78%, var(--askdown-text));
+}
+
+/* Column headers: a flat tint in the column's colour, no pill or border. */
+.askdown-grid thead th:is(.askdown-sentiment-positive, .askdown-sentiment-neutral, .askdown-sentiment-negative) {
+  color: var(--askdown-sentiment-ink);
+  background: var(--askdown-choice-hover);
+}
+
+/* Muted: low emphasis until chosen. */
+.askdown-flag-muted {
+  --askdown-choice-ring: var(--askdown-border-strong);
+}
+
+.askdown-option.askdown-flag-muted .askdown-option-label,
+.askdown-ranking-option.askdown-flag-muted .askdown-ranking-option-label,
+.askdown-grid thead th.askdown-flag-muted {
+  color: var(--askdown-text-muted);
+}
+
+.askdown-grid thead th.askdown-flag-muted {
+  font-weight: 500;
+}
+
+.askdown-flag-muted .askdown-choice:not(:checked) {
+  opacity: 0.6;
+}
+
+.askdown-option.askdown-flag-muted:has(.askdown-choice:checked) .askdown-option-label {
+  color: var(--askdown-text);
+}
+
+/* ---------------------------------------------------------------------------
+ * Address
+ * ------------------------------------------------------------------------- */
+
+/*
+ * Country first, then the parts in the country's order (rendered by
+ * addressPartsHtml, swapped by the runtime when the country changes).
+ */
+.askdown-address,
+.askdown-address-parts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.askdown-address-field {
+  min-width: 0;
+}
+
+.askdown-address-field .askdown-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.askdown-textarea--address {
+  min-height: 4rem;
+}
+
+/* A postal code is short; on its own it doesn't need the full width. */
+.askdown-address-parts > .askdown-address-field--postal-code .askdown-input {
+  max-width: 12rem;
+}
+
+/* Postal code and city side by side, in whichever order the country writes them. */
+.askdown-address-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.askdown-address-row > .askdown-address-field {
+  flex: 1 1 12rem;
+}
+
+.askdown-address-row > .askdown-address-field--postal-code {
+  flex: 0 1 9rem;
+  min-width: 7rem;
+}
+
+@media (max-width: 480px) {
+  .askdown-address-row {
+    flex-direction: column;
+  }
+
+  .askdown-address-row > .askdown-address-field--postal-code {
+    flex-basis: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Phone
+ * ------------------------------------------------------------------------- */
+
+/*
+ * A country picker and the national number, joined into one bordered
+ * control. The picker is a native select whose options read
+ * "🇳🇱 Netherlands +31". Once the runtime has enhanced the group, the select
+ * turns transparent and a compact "🇳🇱 +31" label (kept in sync by the
+ * runtime) sits over it, so the closed control stays short while the open
+ * list keeps the full names. Without the runtime the select shows as is.
+ */
+.askdown-phone {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 24rem;
+  min-height: var(--askdown-control-height);
+  background: var(--askdown-surface);
+  border: 1.5px solid var(--askdown-border-strong);
+  border-radius: var(--askdown-radius-sm);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.askdown-phone:hover {
+  border-color: color-mix(in srgb, var(--askdown-border-strong) 50%, var(--askdown-accent));
+}
+
+/* One focus ring for the whole control, whichever part has focus. */
+.askdown-phone:focus-within {
+  border-color: var(--askdown-accent);
+  box-shadow: 0 0 0 3px var(--askdown-accent-soft);
+}
+
+.askdown-phone:has([aria-invalid="true"]) {
+  border-color: var(--askdown-error);
+}
+
+.askdown-phone:has([aria-invalid="true"]):focus-within {
+  box-shadow: 0 0 0 3px var(--askdown-error-soft);
+}
+
+.askdown-phone:has(:disabled) {
+  opacity: 0.6;
+}
+
+/* The country slot: a tinted prefix, like a button, with the picker inside. */
+.askdown-phone-country {
+  position: relative;
+  display: flex;
+  flex: 0 1 11rem;
+  max-width: 45%;
+  min-width: 0;
+  border-right: 1px solid var(--askdown-border);
+  border-radius: calc(var(--askdown-radius-sm) - 1.5px) 0 0 calc(var(--askdown-radius-sm) - 1.5px);
+  background: var(--askdown-surface-2);
+  transition: background-color 120ms ease;
+}
+
+.askdown-phone-country:hover {
+  background: var(--askdown-accent-soft);
+}
+
+/* Keyboard focus on the picker, on top of the control's ring. */
+.askdown-phone-country:has(> .askdown-phone-select:focus-visible) {
+  background: var(--askdown-accent-soft);
+  box-shadow: inset 0 0 0 2px var(--askdown-accent);
+}
+
+.askdown-phone-select {
+  width: 100%;
+  min-width: 0;
+  min-height: calc(var(--askdown-control-height) - 3px);
+  margin: 0;
+  padding: 0 2rem 0 0.75rem;
+  font: inherit;
+  line-height: 1.4;
+  color: var(--askdown-text);
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 0.6rem center / 1.1rem;
+  border: 0;
+  border-radius: inherit;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.askdown-phone-select:focus,
+.askdown-phone-select:focus-visible {
+  outline: none;
+}
+
+/* Enhanced: the select becomes an invisible hit target under the label. */
+.askdown-phone--enhanced .askdown-phone-country {
+  flex: none;
+  max-width: none;
+}
+
+.askdown-phone--enhanced .askdown-phone-select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  opacity: 0;
+}
+
+.askdown-phone-label {
+  display: none;
+}
+
+.askdown-phone--enhanced .askdown-phone-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 2rem 0 0.7rem;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--askdown-text);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%236b7280' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 0.55rem center / 1.1rem;
+  pointer-events: none;
+}
+
+/*
+ * The flag gets a slot of its own so the label keeps its width when the
+ * platform has no flag glyphs and shows the two letters instead.
+ */
+.askdown-phone-flag {
+  flex: none;
+  min-width: 1.4em;
+  font-size: 1.2em;
+  line-height: 1;
+  text-align: center;
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", var(--askdown-font);
+}
+
+/* Wide enough for "+995", so switching countries doesn't move the number. */
+.askdown-phone-code {
+  min-width: 2.5em;
+  font-size: 0.95em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* No country yet: just the globe and the chevron. */
+.askdown-phone-code:empty {
+  display: none;
+}
+
+.askdown-phone-input {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: calc(var(--askdown-control-height) - 3px);
+  border: 0;
+  border-radius: 0 calc(var(--askdown-radius-sm) - 1.5px) calc(var(--askdown-radius-sm) - 1.5px) 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.askdown-phone-input:hover,
+.askdown-phone-input:focus,
+.askdown-phone-input:focus-visible,
+.askdown-phone-input[aria-invalid="true"],
+.askdown-phone-input[aria-invalid="true"]:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * Ranking
+ * ------------------------------------------------------------------------- */
+
+/*
+ * Without the runtime: a row per option with a select for its rank. With it,
+ * the rows are hidden (the selects keep carrying the answer) and replaced by
+ * a pool of unranked options above a numbered list.
+ */
+.askdown-ranking {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.askdown-ranking-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.35rem 0.35rem 0.35rem 0.75rem;
+  border: 1.5px solid var(--askdown-border);
+  border-radius: var(--askdown-radius-sm);
+  background: var(--askdown-surface);
+}
+
+.askdown-ranking-option-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.askdown-ranking-select {
+  flex: none;
+  width: auto;
+  min-width: 4.75rem;
+  min-height: 2.25rem;
+  padding: 0.3rem 2.1rem 0.3rem 0.85rem;
+  font-variant-numeric: tabular-nums;
+  box-shadow: none;
+}
+
+.askdown-ranking--enhanced > .askdown-ranking-option {
+  display: none;
+}
+
+.askdown-ranking-widget {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.askdown-ranking-hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--askdown-text-muted);
+}
+
+/* The pool: unranked options as tappable chips. */
+.askdown-ranking-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.askdown-ranking-pool-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 100%;
+  min-height: 2.5rem;
+  padding: 0.4rem 1rem 0.4rem 0.8rem;
+  font: inherit;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--askdown-text);
+  background: var(--askdown-surface);
+  border: 1.5px solid var(--askdown-border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform 80ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A small plus in front of the label, drawn in the current color. */
+.askdown-ranking-pool-item::before {
+  content: "";
+  flex: none;
+  width: 1em;
+  height: 1em;
+  background: currentColor;
+  opacity: 0.6;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='black' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 5v14M5 12h14' stroke='black' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: opacity 120ms ease;
+}
+
+.askdown-ranking-pool-item:hover {
+  border-color: var(--askdown-accent);
+  background: var(--askdown-accent-soft);
+  color: var(--askdown-accent);
+}
+
+.askdown-ranking-pool-item:hover::before {
+  opacity: 1;
+}
+
+.askdown-ranking-pool-item:active {
+  transform: translateY(1px);
+}
+
+.askdown-ranking-pool-item:focus-visible {
+  outline: 2px solid var(--askdown-focus);
+  outline-offset: 2px;
+}
+
+/* The ranked list: numbered rows with move and remove buttons. */
+.askdown-ranking-ranked {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.askdown-ranking-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.35rem 0.35rem 0.35rem 0.6rem;
+  background: var(--askdown-accent-soft);
+  border: 1.5px solid color-mix(in srgb, var(--askdown-accent) 35%, transparent);
+  border-radius: var(--askdown-radius-sm);
+  cursor: grab;
+  transition: background-color 120ms ease, border-color 120ms ease, opacity 120ms ease;
+}
+
+.askdown-ranking-item--dragging {
+  opacity: 0.45;
+  cursor: grabbing;
+}
+
+.askdown-ranking-badge {
+  flex: none;
+  display: grid;
+  place-items: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--askdown-accent-contrast);
+  background: var(--askdown-accent);
+}
+
+.askdown-ranking-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.askdown-ranking-item-actions {
+  flex: none;
+  display: flex;
+  gap: 0.1rem;
+}
+
+.askdown-ranking-action {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  color: var(--askdown-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.askdown-ranking-action svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.askdown-ranking-action:hover:not(:disabled) {
+  color: var(--askdown-text);
+  background: var(--askdown-surface);
+}
+
+.askdown-ranking-action--remove:hover:not(:disabled) {
+  color: var(--askdown-error);
+}
+
+.askdown-ranking-action:focus-visible {
+  outline: 2px solid var(--askdown-focus);
+  outline-offset: 1px;
+}
+
+.askdown-ranking-action:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.askdown-ranking-empty {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: var(--askdown-text-muted);
+  border: 1.5px dashed var(--askdown-border-strong);
+  border-radius: var(--askdown-radius-sm);
+}
+
+.askdown-question--invalid .askdown-ranking-empty {
+  border-color: var(--askdown-error);
+}
+
+.askdown-question--invalid .askdown-ranking-pool-item {
+  border-color: var(--askdown-error);
+}
+
+@media (max-width: 480px) {
+  .askdown-ranking-pool {
+    flex-direction: column;
+  }
+
+  .askdown-ranking-pool-item {
+    width: 100%;
+    border-radius: var(--askdown-radius-sm);
+  }
+
+  /* A long label keeps the row's width; its buttons drop to a second line. */
+  .askdown-ranking-item {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    padding-left: 0.5rem;
+    cursor: default;
+  }
+
+  .askdown-ranking-item-actions {
+    margin-left: auto;
+  }
+
+  .askdown-ranking-action {
+    width: 2rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * File input
+ * ------------------------------------------------------------------------- */
+
+.askdown-file {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--askdown-text-muted);
+  border: 1.5px dashed var(--askdown-border-strong);
+  border-radius: var(--askdown-radius-sm);
+  background: var(--askdown-surface-2);
+  cursor: pointer;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.askdown-file:hover {
+  border-color: var(--askdown-accent);
+}
+
+.askdown-file:focus-visible {
+  outline: 2px solid var(--askdown-focus);
+  outline-offset: 2px;
+}
+
+.askdown-file[aria-invalid="true"] {
+  border-color: var(--askdown-error);
+}
+
+.askdown-file::file-selector-button {
+  margin-right: 0.85rem;
+  padding: 0.45rem 0.9rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--askdown-text);
+  background: var(--askdown-surface);
+  border: 1px solid var(--askdown-border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------------
+ * Buttons, actions, navigation, progress
+ * ------------------------------------------------------------------------- */
+
+.askdown-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: calc(var(--askdown-space) * 0.5);
+}
+
+.askdown-actions > .askdown-progress,
+.askdown-actions > .askdown-nav {
+  align-self: stretch;
+}
+
+@media (max-width: 480px) {
+  .askdown-actions {
+    align-items: stretch;
+  }
+
+  .askdown-nav {
+    flex-direction: column-reverse;
+  }
+
+  .askdown-nav .askdown-back {
+    margin-right: 0;
+  }
+}
+
+.askdown-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--askdown-control-height);
+  padding: 0.6rem 1.4rem;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform 80ms ease, box-shadow 120ms ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.askdown-button:active {
+  transform: translateY(1px);
+}
+
+.askdown-button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+  transform: none;
+}
+
+.askdown-button--primary {
+  color: var(--askdown-accent-contrast);
+  background: var(--askdown-accent);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 6px 16px -8px var(--askdown-accent);
+}
+
+.askdown-button--primary:hover:not(:disabled) {
+  background: var(--askdown-accent-hover);
+}
+
+.askdown-button--secondary {
+  color: var(--askdown-text);
+  background: var(--askdown-surface);
+  border-color: var(--askdown-border-strong);
+}
+
+.askdown-button--secondary:hover:not(:disabled) {
+  background: var(--askdown-surface-2);
+  border-color: var(--askdown-accent);
+}
+
+.askdown-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.askdown-nav .askdown-back {
+  margin-right: auto;
+}
+
+.askdown-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.85rem;
+  color: var(--askdown-text-muted);
+}
+
+.askdown-progress-text {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.askdown-progress-bar {
+  flex: 1 1 auto;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--askdown-border);
+  overflow: hidden;
+}
+
+.askdown-progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: var(--askdown-accent);
+  transition: width 240ms ease;
+}
+
+/* ---------------------------------------------------------------------------
+ * Confirmation
+ * ------------------------------------------------------------------------- */
+
+.askdown-confirmation {
+  text-align: center;
+}
+
+.askdown-confirmation-icon {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  color: var(--askdown-success);
+  background: color-mix(in srgb, var(--askdown-success) 14%, transparent);
+}
+
+.askdown-confirmation-icon svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.askdown-confirmation .askdown-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.4rem;
+}
+
+.askdown-confirmation-body {
+  color: var(--askdown-text-muted);
+}
+
+.askdown-confirmation--preview {
+  margin-bottom: var(--askdown-space);
+}
+
+.askdown-confirmation--preview .askdown-button {
+  margin-top: 1.25rem;
+}
+
+.askdown-preview-note {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--askdown-accent);
+  background: var(--askdown-accent-soft);
+}
+
+/* ---------------------------------------------------------------------------
+ * Motion, print
+ * ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .askdown *,
+  .askdown *::before,
+  .askdown *::after {
+    transition: none !important;
+  }
+}
+
+@media print {
+  .askdown {
+    max-width: none;
+    padding: 0;
+    color: #000;
+  }
+
+  .askdown-header,
+  .askdown-page,
+  .askdown-confirmation {
+    box-shadow: none;
+    border-color: #999;
+    break-inside: avoid;
+  }
+
+  .askdown-page[hidden] {
+    display: block !important;
+  }
+
+  .askdown-actions,
+  .askdown-nav,
+  .askdown-progress,
+  .askdown-hp,
+  .askdown-error-summary a::after {
+    display: none !important;
+  }
+
+  .askdown-input,
+  .askdown-file,
+  .askdown-phone {
+    border-color: #999;
+    box-shadow: none;
+  }
+}

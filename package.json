@@ -1,0 +1,32 @@
+{
+  "name": "@askdown/html",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Render Askdown forms to accessible HTML, with a small vanilla JS runtime for paging and branching.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": ["./src/runtime.js", "*.css"],
+  "repository": { "type": "git", "url": "git+https://github.com/askdown/html.git" },
+  "homepage": "https://askdown.dev",
+  "exports": {
+    ".": "./src/index.ts",
+    "./runtime": "./src/runtime.js",
+    "./styles.css": "./src/styles.css"
+  },
+  "keywords": ["forms", "markdown", "askdown", "html", "accessibility"],
+  "scripts": {
+    "sync-spec": "node scripts/sync-spec.mjs",
+    "build": "node scripts/build.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "release": "sh scripts/publish.sh"
+  },
+  "dependencies": {
+    "@askdown/core": "0.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.6",
+    "typescript": "^7.0.2",
+    "vitest": "~4.1.0"
+  }
+}

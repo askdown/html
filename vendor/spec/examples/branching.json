@@ -1,0 +1,64 @@
+{
+  "$schema": "https://askdown.dev/schema/v0.1.json",
+  "askdown": "0.1",
+  "title": "Support request",
+  "pages": [
+    {
+      "id": "start",
+      "items": [
+        {
+          "id": "what-do-you-need-help-with",
+          "type": "radio",
+          "label": "What do you need help with?",
+          "required": true,
+          "options": [
+            {
+              "label": "Billing",
+              "goto": "billing"
+            },
+            {
+              "label": "A bug",
+              "goto": "bug"
+            },
+            {
+              "label": "Nothing, never mind",
+              "goto": "submit"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "billing",
+      "title": "Billing",
+      "next": "submit",
+      "items": [
+        {
+          "id": "invoice-number",
+          "type": "text",
+          "label": "Invoice number"
+        }
+      ]
+    },
+    {
+      "id": "bug",
+      "title": "Bug report",
+      "items": [
+        {
+          "id": "what-happened",
+          "type": "paragraph",
+          "label": "What happened?",
+          "required": true
+        },
+        {
+          "id": "screenshot",
+          "type": "file",
+          "label": "Screenshot",
+          "accept": [
+            "image/*"
+          ]
+        }
+      ]
+    }
+  ]
+}

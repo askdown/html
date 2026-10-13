@@ -1,0 +1,3 @@
+The Askdown specification (`askdown.md`), JSON Schema (`askdown.schema.json`) and examples in this directory are licensed under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+
+Anyone may implement the Askdown format, in any software, open source or not.
