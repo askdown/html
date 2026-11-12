@@ -1,8 +1,11 @@
 {
   "config": {
-    "registry": "https://registry.npmjs.org/",
     "registries": {
+      "npm": "https://registry.vlt.io/upstream/npm/",
       "main": "https://registry.vlt.io/askdown/main/"
+    },
+    "scoped-registries": {
+      "@askdown": "https://registry.vlt.io/askdown/main/"
     }
   }
 }

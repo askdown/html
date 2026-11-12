@@ -30,7 +30,7 @@ jobs:
           node-version: 24
 
       - name: Install vlt
-        run: npm install --global vlt@1
+        run: npm install --global vlt@1.7.0
 
       - name: Check tag matches package.json version
         run: |
