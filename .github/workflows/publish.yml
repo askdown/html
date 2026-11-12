@@ -1,0 +1,63 @@
+# Publishes the package to npm and the vlt registry when a version tag
+# (e.g. v0.3.0) is pushed. Both registries use trusted publishing (OIDC), so
+# no tokens are stored in the repo. Configure a trusted publisher for this
+# repository and the workflow file `publish.yml` on npmjs.com and on vlt.
+name: Publish
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC token for trusted publishing (npm and vlt)
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          # Node 24 ships npm 11, which supports trusted publishing (>= 11.5.1).
+          node-version: 24
+
+      - name: Install vlt
+        run: npm install --global vlt@1
+
+      - name: Check tag matches package.json version
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [ "$GITHUB_REF_NAME" != "v$version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version"
+            exit 1
+          fi
+
+      - run: vlt ci
+      - run: vlt run typecheck
+      - run: vlt run test
+      - run: vlt run build
+
+      # npm first; skipped if this version is already on npm, so the workflow
+      # can be re-run after a failed vlt publish.
+      - name: Publish to npm
+        working-directory: dist
+        run: |
+          name="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./package.json').version")"
+          if npm view "$name@$version" version >/dev/null 2>&1; then
+            echo "$name@$version is already on npm, skipping"
+          else
+            npm publish --access public
+          fi
+
+      - name: Publish to vlt registry
+        working-directory: dist
+        run: vlt registry main publish

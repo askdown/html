@@ -47,6 +47,9 @@ const published = {
   description: pkg.description,
   keywords: pkg.keywords,
   homepage: 'https://askdown.dev',
+  // Must match the GitHub repo, or npm rejects the provenance attestation
+  // that trusted publishing generates.
+  repository: pkg.repository,
   license: pkg.license,
   author: 'Evert Pot',
   type: pkg.type,
