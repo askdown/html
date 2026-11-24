@@ -3,15 +3,15 @@
 #   check  type-checks, tests and builds dist/ once
 #   npm    stages dist/ on npm: it goes live after a maintainer approves it
 #          with `npm stage approve <stage-id>` (or on npmjs.com), with 2FA
-#   vlt    publishes the same dist/ to the vlt registry with the npm CLI. It
-#          goes live right away: staging isn't used on the vlt registry yet.
+#   vlt    stages the same dist/ on the vlt registry with the npm CLI, approved
+#          the same way: `npm stage approve <stage-id> --registry=https://registry.vlt.io/askdown/main/`
 #
 # Both registries use trusted publishing (OIDC), so no tokens are stored in
 # the repo. Each needs a trusted publisher for this repository and the
 # workflow file `publish.yml`:
 #
 #   npm trust github @askdown/html --repo askdown/html --file publish.yml --allow-stage-publish
-#   npm trust github @askdown/html --repo askdown/html --file publish.yml --allow-publish \
+#   npm trust github @askdown/html --repo askdown/html --file publish.yml --allow-stage-publish \
 #     --registry=https://registry.vlt.io/askdown/main/
 #
 # A new npm trusted publisher expires if it isn't used within 2 days, so add
@@ -121,15 +121,15 @@ jobs:
         with:
           node-version: 24
 
-      # The npm CLI rather than vlt publish, for now. Trusted publishing needs
-      # npm 11.5.1 or later.
+      # The npm CLI, because vlt has no stage command. Staged publishing needs
+      # npm 11.15.0 or later.
       - name: Update npm
         run: npm install --global npm@^11.15.0 && npm --version
 
-      - name: Publish to the vlt registry
+      - name: Stage on the vlt registry
         working-directory: dist
         run: |
-          # Safe to re-run: a version that's already on the vlt registry is skipped.
+          # Safe to re-run: a version that's already staged or published on the vlt registry is skipped.
           name="$(node -p "require('./package.json').name")"
           version="$(node -p "require('./package.json').version")"
           if [ -n "$(npm view "$name@$version" version --@askdown:registry=https://registry.vlt.io/askdown/main/ 2>/dev/null)" ]; then
@@ -140,11 +140,11 @@ jobs:
           # --registry too: npm exchanges the OIDC token at the registry's root URL,
           # and only sends the ID token there when the default registry is on the
           # same host. The scoped registry alone leaves the exchange unauthenticated.
-          if npm publish --access public --registry=https://registry.vlt.io/askdown/main/ --@askdown:registry=https://registry.vlt.io/askdown/main/ >"$log" 2>&1; then
+          if npm stage publish --access public --registry=https://registry.vlt.io/askdown/main/ --@askdown:registry=https://registry.vlt.io/askdown/main/ >"$log" 2>&1; then
             cat "$log"
           elif grep -q -i -E "cannot publish over|already (been )?(staged|published|exists)|EPUBLISHCONFLICT|E409|409 Conflict" "$log"; then
             cat "$log"
-            echo "::notice::$name@$version is already on the vlt registry, skipping"
+            echo "::notice::$name@$version is already staged or published on the vlt registry, skipping"
           else
             cat "$log"
             exit 1
