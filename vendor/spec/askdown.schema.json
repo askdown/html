@@ -109,7 +109,8 @@
             "grid",
             "checkbox-grid",
             "file",
-            "address"
+            "address",
+            "switch"
           ]
         }
       },
@@ -158,6 +159,9 @@
         },
         {
           "$ref": "#/$defs/phone"
+        },
+        {
+          "$ref": "#/$defs/switch"
         }
       ]
     },
@@ -616,6 +620,24 @@
           "type": "string",
           "pattern": "^[A-Z]{2}$",
           "description": "ISO 3166-1 alpha-2 code. When set, the country is fixed and not asked."
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "switch": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/question"
+        }
+      ],
+      "properties": {
+        "type": {
+          "const": "switch"
+        },
+        "default": {
+          "type": "boolean",
+          "description": "On by default."
         }
       },
       "unevaluatedProperties": false

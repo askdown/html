@@ -67,6 +67,7 @@ describe('readAnswers', () => {
       ['q.delivery-address.postalCode', '1012 JS'],
       ['q.resume', pdf],
       ['q.resume', docx],
+      ['q.i-agree-to-the-terms', 'on'],
       ['_hp', ''],
     ]);
     const names = renderedNames(allTypes);
@@ -94,6 +95,8 @@ describe('readAnswers', () => {
         { name: 'cv.pdf', size: 8, type: 'application/pdf' },
         { name: 'letter.docx', size: 2, type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
       ],
+      'subscribe-to-the-newsletter': false,
+      'i-agree-to-the-terms': true,
     });
     expect(read.files).toEqual({ resume: [pdf, docx] });
 
@@ -120,6 +123,8 @@ describe('readAnswers', () => {
         { name: 'cv.pdf', size: 8, type: 'application/pdf' },
         { name: 'letter.docx', size: 2, type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
       ],
+      'subscribe-to-the-newsletter': false,
+      'i-agree-to-the-terms': true,
     });
   });
 
@@ -203,7 +208,8 @@ describe('readAnswers', () => {
 
   it('ignores non-file values for file questions and unknown fields', () => {
     const read = readAnswers(allTypes, formData([['q.resume', 'not a file'], ['q.unknown', 'x'], ['unrelated', 'y']]));
-    expect(read.answers).toEqual({});
+    // Switches always have an answer: absent means off.
+    expect(read.answers).toEqual({ 'subscribe-to-the-newsletter': false, 'i-agree-to-the-terms': false });
   });
 
   it('detects the honeypot', () => {
@@ -381,6 +387,13 @@ describe('readAnswers', () => {
       const result = validateResponse(allTypes, read.answers);
       expect(result.errors.map((e) => e.id), number).toContain('phone');
     }
+  });
+
+  it('reads a switch as on when submitted and off when absent', () => {
+    const form = parse('? A\n[switch on]\n\n? B *\n[switch]').form;
+    expect(readAnswers(form, formData([['q.b', 'on']])).answers).toEqual({ a: false, b: true });
+    const result = validateResponse(form, readAnswers(form, formData([])).answers);
+    expect(result.errors).toEqual([{ id: 'b', message: 'Switch this on to continue.' }]);
   });
 
   it('collects address parts into an object and drops empty parts', () => {

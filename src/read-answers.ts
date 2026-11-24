@@ -109,6 +109,10 @@ function readQuestion(q: Question, data: FormData, out: ReadResult): void {
       out.answers[q.id] = toE164(number, country === undefined ? q.country : country || undefined) ?? number;
       return;
     }
+    case 'switch':
+      // An unchecked checkbox isn't submitted at all, so absent means off.
+      out.answers[q.id] = data.get(name) !== null;
+      return;
     case 'file': {
       const files: File[] = [];
       for (const entry of data.getAll(name)) {

@@ -34,6 +34,7 @@ import {
   renderMarkdown,
   type ScaleQuestion,
   type SelectQuestion,
+  type SwitchQuestion,
 } from '@askdown/core';
 import { OTHER_VALUE, type RenderOptions } from './index.ts';
 
@@ -709,6 +710,34 @@ function phoneHtml(ctx: Ctx, q: PhoneQuestion): string {
   );
 }
 
+/** Whether a raw switch value is on: true, or "on" as an HTML checkbox submits it. */
+function isOn(value: unknown): boolean {
+  return value === true || (typeof value === 'string' && ['on', 'true', '1', 'yes'].includes(value.trim().toLowerCase()));
+}
+
+/**
+ * Switch: a checkbox with the ARIA switch role, its label beside it. An
+ * unchecked checkbox isn't submitted, which reads back as off. Native
+ * `required` on a checkbox means "must be checked", which is exactly what a
+ * required switch means.
+ */
+function switchHtml(ctx: Ctx, q: SwitchQuestion): string {
+  const id = elementId(ctx, q.id);
+  const on = ctx.values ? isOn(valueOf(ctx, q.id)) : q.default === true;
+  return (
+    `<div class="askdown-switch-row">` +
+    `<input class="askdown-switch" type="checkbox" role="switch" id="${esc(id)}" name="q.${esc(q.id)}" value="on"` +
+    attr('checked', on) +
+    attr('required', q.required) +
+    inputState(ctx, q) +
+    `>` +
+    `<label class="askdown-label askdown-switch-label" for="${esc(id)}">${esc(q.label)}${requiredMark(q, false)}</label>` +
+    `</div>` +
+    helpHtml(ctx, q) +
+    errorHtml(ctx, q.id)
+  );
+}
+
 function questionHtml(ctx: Ctx, q: Question): string {
   let inner: string;
   switch (q.type) {
@@ -753,6 +782,9 @@ function questionHtml(ctx: Ctx, q: Question): string {
       break;
     case 'phone':
       inner = single(ctx, q, phoneHtml(ctx, q));
+      break;
+    case 'switch':
+      inner = switchHtml(ctx, q);
       break;
   }
   const classes = ['askdown-question', `askdown-question--${q.type}`];

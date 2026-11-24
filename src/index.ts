@@ -14,6 +14,7 @@
  *                       country
  *   q.<id>.country      phone: the ISO country of the number in q.<id>;
  *                       readAnswers combines the two into an E.164 string
+ *   q.<id>              switch: "on" when switched on, absent when off
  *   _hp                 honeypot text input, must stay empty
  */
 import type { Answers, Form } from '@askdown/core';

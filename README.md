@@ -75,6 +75,8 @@ Field names in the rendered form:
 | `q.<id>.<optionIndex>` | Ranking: the 1-based rank of each option, `""` when unranked. |
 | `q.<id>.<part>` | Address parts: `street`, `city`, `region`, `postalCode`, `country`. |
 | `q.<id>.country` | Phone: the ISO country of the number in `q.<id>`. |
+
+A switch submits `q.<id>` as `on` when it is on, and nothing when it is off, like a checkbox.
 | `_hp` | Honeypot; must stay empty. |
 
 

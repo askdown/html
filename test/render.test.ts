@@ -492,6 +492,30 @@ describe('renderForm', () => {
     expect(html).toContain('<p class="askdown-error" id="askdown-home-address-error">Enter the street address.</p>');
   });
 
+  it('renders a switch as a checkbox with the switch role, label beside it', () => {
+    const html = section(renderForm(allTypes), 'subscribe-to-the-newsletter');
+    expect(html).toContain(
+      '<div class="askdown-switch-row"><input class="askdown-switch" type="checkbox" role="switch" id="askdown-subscribe-to-the-newsletter" name="q.subscribe-to-the-newsletter" value="on" checked aria-describedby="askdown-subscribe-to-the-newsletter-error">' +
+        '<label class="askdown-label askdown-switch-label" for="askdown-subscribe-to-the-newsletter">Subscribe to the newsletter</label></div>',
+    );
+    expect(html).toContain('data-type="switch"');
+  });
+
+  it('requires a required switch to be on natively', () => {
+    const html = section(renderForm(allTypes), 'i-agree-to-the-terms');
+    expect(html).toMatch(/<input class="askdown-switch"[^>]* required[^>]*>/);
+    expect(html).not.toMatch(/<input class="askdown-switch"[^>]* checked/);
+  });
+
+  it('re-fills a switch from values instead of its default', () => {
+    const off = section(renderForm(allTypes, { values: { 'subscribe-to-the-newsletter': false } }), 'subscribe-to-the-newsletter');
+    expect(off).not.toContain(' checked');
+    const on = section(renderForm(allTypes, { values: { 'i-agree-to-the-terms': true } }), 'i-agree-to-the-terms');
+    expect(on).toContain(' checked');
+    const raw = section(renderForm(allTypes, { values: { 'i-agree-to-the-terms': 'on' } }), 'i-agree-to-the-terms');
+    expect(raw).toContain(' checked');
+  });
+
   it('adds hidden inputs and a preview flag', () => {
     const html = renderForm(allTypes, { hidden: { _csrf: 'tok"en' }, preview: true, idPrefix: 'p1' });
     expect(html).toContain('data-preview');

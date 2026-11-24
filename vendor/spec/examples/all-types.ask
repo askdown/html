@@ -37,7 +37,7 @@ title: Every question type
 - [ ] Olives
 
 ? Country
-[dropdown]
+[select]
 - Netherlands
 - Canada
 - Other country
@@ -72,3 +72,9 @@ title: Every question type
 ? Resume *
 > PDF or Word, up to 5MB.
 [file accept=".pdf,.docx" maxsize=5MB maxfiles=2]
+
+? Subscribe to the newsletter
+[switch on]
+
+? I agree to the terms *
+[switch]

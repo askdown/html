@@ -175,8 +175,7 @@ Mixing `( )`, `[ ]` and numbered options in one question is an error.
 | `checkbox-grid` | Several columns per row | — | `rows`, `columns` |
 | `file` | Uploaded files | `accept`, `maxsize`, `maxfiles` | `accept`, `maxSize`, `maxFiles` |
 | `address` | Postal address | `country` | `country` |
-
-`checkboxes`, `dropdown` and `textarea` are accepted as aliases for `checkbox`, `select` and `paragraph`.
+| `switch` | On or off | `on` | `default` |
 
 ### 4.1 Text
 
@@ -292,6 +291,23 @@ The answer is an [E.164](https://www.itu.int/rec/T-REC-E.164) string: `+`, the c
 
 `country` is an ISO 3166-1 alpha-2 code (case-insensitive in the text, uppercase in JSON). It sets the default country for national numbers; unlike in `address`, the respondent can change it. Implementations SHOULD let respondents pick a country, and MAY show flags. A number typed with a leading `+` or `00` is international and ignores the country. Otherwise the country's calling code is prefixed, and a leading trunk `0` is dropped (`06 1234 5678` in NL is `+31612345678`), except in countries where it is part of the number, such as Italy.
 
+### 4.9 Switches
+
+```askdown
+? Subscribe to the newsletter
+[switch]
+
+? Email me a copy of my answers
+[switch on]
+
+? I agree to the terms *
+[switch]
+```
+
+A switch is an on-off control. It is off unless the `on` flag is set, which makes it on by default. A switch is only created with an explicit `[switch]`; a single `- [ ]` option is still a `checkbox` question.
+
+A switch always has an answer, since off is an answer too. A required switch MUST be on, as for agreeing to terms. Implementations SHOULD render a switch with the ARIA `switch` role, and MAY render it as a checkbox.
+
 ## 5. Pages
 
 A line of three or more dashes starts a new page (a *section*). A page break MAY carry an id:
@@ -395,6 +411,7 @@ A response maps question ids to answers:
 | `file` | array of [file objects](#71-files) |
 | `phone` | string: an E.164 number, such as `+31612345678` |
 | `address` | object with `street`, `city`, `country` and optionally `region` and `postalCode`; `country` is an uppercase ISO 3166-1 alpha-2 code |
+| `switch` | boolean: `true` when on |
 
 A choice's value defaults to its label (see [§3.3](#33-choice-values-and-flags)), so for a form that sets no explicit values these are the labels verbatim.
 
@@ -409,7 +426,7 @@ A choice's value defaults to its label (see [§3.3](#33-choice-values-and-flags)
 
 When validating a response, implementations MUST:
 
-1. Trim answers. An empty string, empty array or empty object is no answer.
+1. Trim answers. An empty string, empty array or empty object is no answer. A missing answer to a `switch` is `false`.
 2. Determine the pages the respondent visits, following [jumps](#52-jumps) with the given answers.
 3. Only check questions on visited pages, and discard answers to questions on other pages.
 4. Reject a missing answer to a required question, and answers that don't satisfy the question's constraints.
