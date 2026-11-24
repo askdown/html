@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3.0 (????-??-??)
+0.3.0 (2026-11-24)
 ------------------
 
 * Renders `switch` questions as a checkbox with the `switch` ARIA role, with

@@ -1,6 +1,6 @@
 {
   "name": "@askdown/html",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "description": "Render Askdown forms to accessible HTML, with a small vanilla JS runtime for paging and branching.",
   "license": "MIT",
