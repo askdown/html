@@ -137,7 +137,10 @@ jobs:
             exit 0
           fi
           log="$RUNNER_TEMP/publish.log"
-          if npm publish --access public --@askdown:registry=https://registry.vlt.io/askdown/main/ >"$log" 2>&1; then
+          # --registry too: npm exchanges the OIDC token at the registry's root URL,
+          # and only sends the ID token there when the default registry is on the
+          # same host. The scoped registry alone leaves the exchange unauthenticated.
+          if npm publish --access public --registry=https://registry.vlt.io/askdown/main/ --@askdown:registry=https://registry.vlt.io/askdown/main/ >"$log" 2>&1; then
             cat "$log"
           elif grep -q -i -E "cannot publish over|already (been )?(staged|published|exists)|EPUBLISHCONFLICT|E409|409 Conflict" "$log"; then
             cat "$log"

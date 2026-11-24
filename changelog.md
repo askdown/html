@@ -16,6 +16,9 @@ Changelog
   publish`. They go live right away; only npm releases are staged.
 * The publish jobs are safe to re-run: a version that is already published, or
   already staged on npm, is skipped instead of failing the job.
+* Fixed publishing to the vlt registry from GitHub Actions: npm now sends the
+  trusted-publishing token exchange to the vlt registry with credentials,
+  instead of failing with ENEEDAUTH.
 
 
 0.2.1 (2026-11-12)
