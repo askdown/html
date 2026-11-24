@@ -1,7 +1,23 @@
-# Publishes the package to npm and the vlt registry when a version tag
-# (e.g. v0.3.0) is pushed. Both registries use trusted publishing (OIDC), so
-# no tokens are stored in the repo. Configure a trusted publisher for this
-# repository and the workflow file `publish.yml` on npmjs.com and on vlt.
+# Publishes the package when a version tag (e.g. v0.3.0) is pushed.
+#
+#   check  type-checks, tests and builds dist/ once
+#   npm    stages dist/ on npm: it goes live after a maintainer approves it
+#          with `npm stage approve <stage-id>` (or on npmjs.com), with 2FA
+#   vlt    publishes the same dist/ to the vlt registry with the npm CLI. It
+#          goes live right away: staging isn't used on the vlt registry yet.
+#
+# Both registries use trusted publishing (OIDC), so no tokens are stored in
+# the repo. Each needs a trusted publisher for this repository and the
+# workflow file `publish.yml`:
+#
+#   npm trust github @askdown/html --repo askdown/html --file publish.yml --allow-stage-publish
+#   npm trust github @askdown/html --repo askdown/html --file publish.yml --allow-publish \
+#     --registry=https://registry.vlt.io/askdown/main/
+#
+# A new npm trusted publisher expires if it isn't used within 2 days, so add
+# it just before tagging a release. Every job is safe to re-run: a version
+# that is already staged or published is skipped, so after a failure use
+# "Re-run failed jobs" or "Re-run all jobs".
 name: Publish
 
 on:
@@ -16,17 +32,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
+  check:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write # OIDC token for trusted publishing (npm and vlt)
     steps:
       - uses: actions/checkout@v5
 
       - uses: actions/setup-node@v5
         with:
-          # Node 24 ships npm 11, which supports trusted publishing (>= 11.5.1).
           node-version: 24
 
       - name: Install vlt
@@ -45,19 +57,92 @@ jobs:
       - run: vlt run test
       - run: vlt run build
 
-      # npm first; skipped if this version is already on npm, so the workflow
-      # can be re-run after a failed vlt publish.
-      - name: Publish to npm
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  npm:
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC token for trusted publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # Staged publishing needs npm 11.15.0 or later.
+      - name: Update npm
+        run: npm install --global npm@^11.15.0 && npm --version
+
+      - name: Stage on npm
         working-directory: dist
         run: |
+          # Safe to re-run: a version that's already staged or published on npm is skipped.
           name="$(node -p "require('./package.json').name")"
           version="$(node -p "require('./package.json').version")"
-          if npm view "$name@$version" version >/dev/null 2>&1; then
-            echo "$name@$version is already on npm, skipping"
+          if [ -n "$(npm view "$name@$version" version --@askdown:registry=https://registry.npmjs.org/ 2>/dev/null)" ]; then
+            echo "::notice::$name@$version is already published, skipping"
+            exit 0
+          fi
+          log="$RUNNER_TEMP/publish.log"
+          if npm stage publish --access public --provenance --@askdown:registry=https://registry.npmjs.org/ >"$log" 2>&1; then
+            cat "$log"
+          elif grep -q -i -E "cannot publish over|already (been )?(staged|published|exists)|EPUBLISHCONFLICT|E409|409 Conflict" "$log"; then
+            cat "$log"
+            echo "::notice::$name@$version is already staged or published on npm, skipping"
           else
-            npm publish --access public
+            cat "$log"
+            exit 1
           fi
 
-      - name: Publish to vlt registry
+  vlt:
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC token for trusted publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # The npm CLI rather than vlt publish, for now. Trusted publishing needs
+      # npm 11.5.1 or later.
+      - name: Update npm
+        run: npm install --global npm@^11.15.0 && npm --version
+
+      - name: Publish to the vlt registry
         working-directory: dist
-        run: vlt registry main publish
+        run: |
+          # Safe to re-run: a version that's already on the vlt registry is skipped.
+          name="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./package.json').version")"
+          if [ -n "$(npm view "$name@$version" version --@askdown:registry=https://registry.vlt.io/askdown/main/ 2>/dev/null)" ]; then
+            echo "::notice::$name@$version is already published, skipping"
+            exit 0
+          fi
+          log="$RUNNER_TEMP/publish.log"
+          if npm publish --access public --@askdown:registry=https://registry.vlt.io/askdown/main/ >"$log" 2>&1; then
+            cat "$log"
+          elif grep -q -i -E "cannot publish over|already (been )?(staged|published|exists)|EPUBLISHCONFLICT|E409|409 Conflict" "$log"; then
+            cat "$log"
+            echo "::notice::$name@$version is already on the vlt registry, skipping"
+          else
+            cat "$log"
+            exit 1
+          fi

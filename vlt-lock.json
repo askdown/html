@@ -11,6 +11,7 @@
   },
   "nodes": {
     "~main~@askdown+core@0.2.0": [4,"@askdown/core","sha512-DpXqspYQjyZzlk7oKkYsRNDObwPEQdoXHzR3MKJsiDuZdQiM+drtlLY1Crr5qI2pCLI+r3bcwKoQ8CSipYKy7w==","https://registry.vlt.io/askdown/main/@askdown/core/-/core-0.2.0.tar.br"],
+    "~main~@askdown+spec@0.3.0": [2,"@askdown/spec","sha512-z3Nmz1/NObXueyC5E76AwHiJ39/Ju62EIaEJxAFvrsXR8e282JLZO2TSzeCPE+40ueEOuN1U9BDIYpnlJnNy/Q==","https://registry.vlt.io/askdown/main/@askdown/spec/-/spec-0.3.0.tgz"],
     "~npm~@emnapi+core@2.0.0-beta.2": [7,"@emnapi/core",null,"https://registry.vlt.io/upstream/npm/@emnapi/core/-/core-2.0.0-beta.2.tar.br"],
     "~npm~@emnapi+runtime@2.0.0-beta.2": [7,"@emnapi/runtime",null,"https://registry.vlt.io/upstream/npm/@emnapi/runtime/-/runtime-2.0.0-beta.2.tar.br"],
     "~npm~@emnapi+wasi-threads@2.2.0": [7,"@emnapi/wasi-threads",null,"https://registry.vlt.io/upstream/npm/@emnapi/wasi-threads/-/wasi-threads-2.2.0.tar.br"],
@@ -112,6 +113,7 @@
     "~npm~why-is-node-running@2.3.0": [6,"why-is-node-running","sha512-qh4cVDlZ28e4xkbdhEyypO83gHeVRJOwT1a5DlDj8XKB1i9FmX38gyxgPNu7W5c9olDXXewB5ubs5tapqQHB0w==","https://registry.vlt.io/upstream/npm/why-is-node-running/-/why-is-node-running-2.3.0.tar.br",null,null,null,null,{  "why-is-node-running": "cli.js"}]
   },
   "edges": {
+    "file~_d @askdown/spec": "dev ^0.3.0 ~main~@askdown+spec@0.3.0",
     "file~_d @types/node": "dev ^24.13.6 ~npm~@types+node@24.19.2",
     "file~_d typescript": "dev ^7.0.2 ~npm~typescript@7.0.2",
     "file~_d vitest": "dev ~4.1.0 ~npm~vitest@4.1.12~peer.49e3ac732758455f",

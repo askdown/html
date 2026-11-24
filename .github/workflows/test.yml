@@ -1,0 +1,33 @@
+# Type-checks, tests and builds the package on every push to main and every
+# pull request. The publish workflow runs the same steps before publishing.
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Install vlt
+        run: npm install --global vlt@1.7.0
+
+      - run: vlt ci
+      - run: vlt run typecheck
+      - run: vlt run test
+      - run: vlt run build

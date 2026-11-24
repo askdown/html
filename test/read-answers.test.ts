@@ -1,10 +1,11 @@
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
 import { type Form, parse, validateResponse } from '@askdown/core';
 import { describe, expect, it } from 'vitest';
 import { OTHER_VALUE, readAnswers, renderForm } from '../src/index.ts';
 
-const EXAMPLES = join(import.meta.dirname, '../vendor/spec/examples');
+const EXAMPLES = join(dirname(createRequire(import.meta.url).resolve('@askdown/spec/package.json')), 'examples');
 
 function load(name: string): Form {
   return parse(readFileSync(join(EXAMPLES, name), 'utf8')).form;
