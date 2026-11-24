@@ -19,6 +19,8 @@ Changelog
 * Fixed publishing to the vlt registry from GitHub Actions: npm now sends the
   trusted-publishing token exchange to the vlt registry with credentials,
   instead of failing with ENEEDAUTH.
+* Requires `@askdown/core` 0.3.0, which adds the `switch` question type and
+  removes the `checkboxes`, `dropdown` and `textarea` type aliases.
 
 
 0.2.1 (2026-11-12)

@@ -10,7 +10,7 @@
     }
   },
   "nodes": {
-    "~main~@askdown+core@0.2.0": [4,"@askdown/core","sha512-DpXqspYQjyZzlk7oKkYsRNDObwPEQdoXHzR3MKJsiDuZdQiM+drtlLY1Crr5qI2pCLI+r3bcwKoQ8CSipYKy7w==","https://registry.vlt.io/askdown/main/@askdown/core/-/core-0.2.0.tar.br"],
+    "~main~@askdown+core@0.3.0": [0,"@askdown/core","sha512-g695c9F2mDHhLR8XYNcqdB+S6qA7UenAPtHgOxt/X+CQ9Mzr4JcDjQIGTeM5JHWRNVhrRymca3chR0ZBLCHZAQ==","https://registry.vlt.io/askdown/main/@askdown/core/-/core-0.3.0.tgz"],
     "~main~@askdown+spec@0.3.0": [2,"@askdown/spec","sha512-z3Nmz1/NObXueyC5E76AwHiJ39/Ju62EIaEJxAFvrsXR8e282JLZO2TSzeCPE+40ueEOuN1U9BDIYpnlJnNy/Q==","https://registry.vlt.io/askdown/main/@askdown/spec/-/spec-0.3.0.tgz"],
     "~npm~@emnapi+core@2.0.0-beta.2": [7,"@emnapi/core",null,"https://registry.vlt.io/upstream/npm/@emnapi/core/-/core-2.0.0-beta.2.tar.br"],
     "~npm~@emnapi+runtime@2.0.0-beta.2": [7,"@emnapi/runtime",null,"https://registry.vlt.io/upstream/npm/@emnapi/runtime/-/runtime-2.0.0-beta.2.tar.br"],
@@ -117,7 +117,7 @@
     "file~_d @types/node": "dev ^24.13.6 ~npm~@types+node@24.19.2",
     "file~_d typescript": "dev ^7.0.2 ~npm~typescript@7.0.2",
     "file~_d vitest": "dev ~4.1.0 ~npm~vitest@4.1.12~peer.49e3ac732758455f",
-    "file~_d @askdown/core": "prod 0.2.0 ~main~@askdown+core@0.2.0",
+    "file~_d @askdown/core": "prod 0.3.0 ~main~@askdown+core@0.3.0",
     "~npm~@emnapi+core@2.0.0-beta.2 @emnapi/wasi-threads": "prod 2.2.0 ~npm~@emnapi+wasi-threads@2.2.0",
     "~npm~@emnapi+core@2.0.0-beta.2 tslib": "prod ^2.4.0 ~npm~tslib@2.9.1",
     "~npm~@emnapi+runtime@2.0.0-beta.2 tslib": "prod ^2.4.0 ~npm~tslib@2.9.1",

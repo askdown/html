@@ -33,7 +33,7 @@
     "release": "sh scripts/publish.sh"
   },
   "dependencies": {
-    "@askdown/core": "0.2.0"
+    "@askdown/core": "0.3.0"
   },
   "devDependencies": {
     "@askdown/spec": "^0.3.0",
