@@ -517,6 +517,15 @@ describe('renderForm', () => {
     expect(raw).toContain(' checked');
   });
 
+  it('renders a colour input with its default, or the answer', () => {
+    expect(section(renderForm(allTypes), 'favourite-colour')).toContain(
+      '<input class="askdown-input askdown-input--color" type="color" id="askdown-favourite-colour" name="q.favourite-colour" aria-describedby="askdown-favourite-colour-error" value="#1f6f6a">',
+    );
+    const refilled = section(renderForm(allTypes, { values: { 'favourite-colour': '#FF0000' } }), 'favourite-colour');
+    expect(refilled).toContain('value="#ff0000"');
+    expect(section(renderForm(parse('? A\n[color]').form), 'a')).not.toContain('value=');
+  });
+
   it('adds hidden inputs and a preview flag', () => {
     const html = renderForm(allTypes, { hidden: { _csrf: 'tok"en' }, preview: true, idPrefix: 'p1' });
     expect(html).toContain('data-preview');

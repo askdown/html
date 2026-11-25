@@ -241,6 +241,14 @@ function textLike(ctx: Ctx, q: Question): string {
         attr('max', q.max) +
         `>`
       );
+    case 'color':
+      // A colour input always has a value: the answer, the default, or the
+      // browser's #000000.
+      return (
+        `<input class="askdown-input askdown-input--color" type="color" ${common}` +
+        attr('value', (value || q.default)?.toLowerCase()) +
+        `>`
+      );
     default:
       return '';
   }
@@ -748,6 +756,7 @@ function questionHtml(ctx: Ctx, q: Question): string {
     case 'number':
     case 'date':
     case 'time':
+    case 'color':
       inner = single(ctx, q, textLike(ctx, q));
       break;
     case 'radio':
