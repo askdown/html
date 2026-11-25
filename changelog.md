@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3.1 (????-??-??)
+0.3.1 (2026-11-25)
 ------------------
 
 * Renders `color` questions as a colour input, starting at the question's
