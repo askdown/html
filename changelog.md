@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.3.1 (????-??-??)
+------------------
+
+* Renders `color` questions as a colour input, starting at the question's
+  default.
+* Requires `@askdown/core` 0.3.1.
+
+
 0.3.0 (2026-11-24)
 ------------------
 

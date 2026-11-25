@@ -33,10 +33,10 @@
     "release": "sh scripts/publish.sh"
   },
   "dependencies": {
-    "@askdown/core": "0.3.0"
+    "@askdown/core": "0.3.1"
   },
   "devDependencies": {
-    "@askdown/spec": "^0.3.0",
+    "@askdown/spec": "^0.3.1",
     "@types/node": "^24.13.6",
     "typescript": "^7.0.2",
     "vitest": "~4.1.0"

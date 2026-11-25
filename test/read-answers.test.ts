@@ -397,6 +397,13 @@ describe('readAnswers', () => {
     expect(result.errors).toEqual([{ id: 'b', message: 'Switch this on to continue.' }]);
   });
 
+  it('reads a colour and normalizes it', () => {
+    const form = parse('? A\n[color]').form;
+    const read = readAnswers(form, formData([['q.a', '#1F6F6A']]));
+    expect(read.answers).toEqual({ a: '#1F6F6A' });
+    expect(validateResponse(form, read.answers).answers).toEqual({ a: '#1f6f6a' });
+  });
+
   it('collects address parts into an object and drops empty parts', () => {
     const read = readAnswers(
       allTypes,

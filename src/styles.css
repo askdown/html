@@ -514,6 +514,28 @@ legend.askdown-label + * {
   max-width: 16rem;
 }
 
+/* The swatch fills the box; the browser's own border and padding go. */
+.askdown-input--color {
+  width: 5rem;
+  padding: 0.3rem;
+  cursor: pointer;
+}
+
+.askdown-input--color::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+/* Separate rules: an engine drops a whole rule over a selector it doesn't know. */
+.askdown-input--color::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--askdown-radius-sm) - 3px);
+}
+
+.askdown-input--color::-moz-color-swatch {
+  border: 0;
+  border-radius: calc(var(--askdown-radius-sm) - 3px);
+}
+
 .askdown-select {
   max-width: 24rem;
   padding-right: 2.5rem;
